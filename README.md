@@ -1,4 +1,4 @@
-# whale-watch 🐋
+# whale-purse 🐋
 
 > 一只住在 DeepSeek Harness（DSH）里的鲸鱼娘桌宠，帮你盯着 DeepSeek 账户余额和当前会话的用量/花费。
 
@@ -21,15 +21,15 @@
 1. 把本仓库软链进你的 DSH web profile 依赖：
 
    ```bash
-   ln -s /path/to/whale-watch ~/.dsh/profiles/web/node_modules/whale-watch
+   ln -s /path/to/whale-purse ~/.dsh/profiles/web/node_modules/whale-purse
    ```
 
 2. 在 `~/.dsh/profiles/web/cordis.patch.yml` 里加一条 insert：
 
    ```yaml
    - insert:
-       - id: whale-watch
-         name: 'whale-watch'
+       - id: whale-purse
+         name: 'whale-purse'
          config:
            model: pro            # pro | flash
            refreshIntervalSeconds: 30
@@ -53,7 +53,7 @@
 ## 项目结构
 
 ```
-whale-watch/
+whale-purse/
 ├── lib/
 │   ├── index.js        # host 端：余额服务 + HTTP 路由（/api/balance 等）
 │   └── client.js       # 浏览器端：鲸鱼娘桌宠 + 面板（立绘 base64 内联）

@@ -1,5 +1,5 @@
 {
-  "name": "whale-watch",
+  "name": "whale-purse",
   "description": "鲸鱼娘桌宠 · DeepSeek 余额 + 会话用量/花费监视，直接挂进 DSH Web profile 的组合层（cordis.patch.yml insert，热重载）",
   "version": "1.0.0",
   "type": "module",

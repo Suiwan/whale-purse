@@ -1,4 +1,4 @@
-# whale-watch
+# whale-purse
 
 DeepSeek Harness 的鲸鱼娘桌宠插件：显示 DeepSeek 账户余额 + 当前会话用量/花费，透明立绘悬浮、可拖拽、点击开面板。
 
@@ -12,7 +12,7 @@ DeepSeek Harness 的鲸鱼娘桌宠插件：显示 DeepSeek 账户余额 + 当�
 
 ```bash
 # 安装（软链进 DSH web profile）
-ln -s "$(pwd)" ~/.dsh/profiles/web/node_modules/whale-watch
+ln -s "$(pwd)" ~/.dsh/profiles/web/node_modules/whale-purse
 
 # 在 ~/.dsh/profiles/web/cordis.patch.yml 加 insert（见 README.md），保存即热重载
 # 刷新浏览器：Cmd+Shift+R
