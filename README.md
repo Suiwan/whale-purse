@@ -15,6 +15,7 @@
 - ⚡ **峰谷定价**：北京 9:00-12:00 / 14:00-18:00 高峰价自动切换；官方定价页每 6h 自动抓取
 - 🌗 **主题适配**：面板颜色跟随 DSH 浅色/深色主题（`--dsw-alias-*` token）
 - 🛡️ **友好错误**：余额/定价请求超时显示「请求超时」而非英文 `This operation was aborted`
+- 🧩 **兼容 [DSH-better-sidebar](https://github.com/omdsh-dev/DSH-better-sidebar)**：适配其 Explorer 面板的浮层层级，桌宠拖进面板区域也不会被遮挡
 
 ## 安装
 
