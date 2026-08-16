@@ -2,7 +2,7 @@
 
 > 一只住在 DeepSeek Harness（DSH）里的鲸鱼娘桌宠，帮你盯着 DeepSeek 账户余额和当前会话的用量/花费。
 
-把「DeepSeek 余额 + 会话 token 用量/预估花费」做成一只可拖拽的二次元鲸鱼娘，浮在 DSH Web GUI 上。点她弹出用量明细面板，拖她换位置，位置自动记住；余额 30s、花费 3s 自动刷新。
+把「DeepSeek 余额 + 会话 token 用量/预估花费」做成一只可拖拽的二次元鲸鱼娘，浮在 DSH Web GUI 上。点她弹出用量明细面板（当前 / 历史双 Tab），拖她换位置，位置自动记住；余额 30s、花费 3s 自动刷新。
 
 ![preview](assets/preview.png)
 
@@ -14,8 +14,9 @@
 - 🏃 **状态动作**：有任务运行时鲸鱼娘忙碌抖动 + 「忙…」标签；点击她 squash 弹跳回应（纯 CSS，不动形象）
 - 💰 **余额监视**：DeepSeek 官方 `Get User Balance` 接口，30s 轮询 + 并发去重
 - 🧮 **会话用量**：读 `sessionProjections` 的 `tokenUsage` 投影，按官方价格折算花费（输入/缓存读/缓存写/输出分桶）
+- 📊 **历史趋势（双 Tab 面板）**：「当前」Tab 看余额与实时花费；「历史」Tab 看近 7 天花费柱状图 + 本会话每条提问的花费明细（多步循环自动合并成一行，问题前 10 字 + Tokens + 花费）
 - ⚡ **峰谷定价**：北京 9:00-12:00 / 14:00-18:00 高峰价自动切换；官方定价页每 6h 自动抓取
-- 🌗 **主题适配**：面板颜色跟随 DSH 浅色/深色主题（`--dsw-alias-*` token）
+- 🌗 **主题适配**：面板颜色与柱状图深浅随 DSH 浅色/深色主题切换（`--dsw-alias-*` token）
 - 🖥️ **多屏适配**：外接大屏/笔记本切换时自动把桌宠夹回视口内，不会丢
 - 🛡️ **友好错误**：余额/定价请求超时显示「请求超时」而非英文 `This operation was aborted`
 - 🧩 **兼容 [DSH-better-sidebar](https://github.com/omdsh-dev/DSH-better-sidebar)**：适配其 Explorer 面板的浮层层级，桌宠拖进面板区域也不会被遮挡
@@ -59,8 +60,8 @@
 ```
 whale-purse/
 ├── lib/
-│   ├── index.js        # host 端：余额服务 + HTTP 路由（/api/balance 等）
-│   └── client.js       # 浏览器端：鲸鱼娘桌宠 + 面板（立绘 base64 内联）
+│   ├── index.js        # host 端：余额服务 + HTTP 路由（/api/balance、/api/balance/daily、/api/balance/messages）
+│   └── client.js       # 浏览器端：鲸鱼娘桌宠 + 双 Tab 面板（立绘 base64 内联）
 ├── assets/
 │   ├── whale-sprite.png        # 鲸鱼娘立绘（280×373，透明）
 │   ├── whale-front-source.png  # 立绘源图
