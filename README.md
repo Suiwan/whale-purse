@@ -14,6 +14,7 @@
 - 🏃 **状态动作**：有任务运行时鲸鱼娘忙碌抖动 + 「忙…」标签；点击她 squash 弹跳回应（纯 CSS，不动形象）
 - 💰 **余额监视**：DeepSeek 官方 `Get User Balance` 接口，30s 轮询 + 并发去重；请求失败保留上次快照并提示过期
 - ⚠️ **低余额/预算提醒**：余额低于阈值或今日花费超过预算时，面板警告 + 鲸鱼娘红点；浏览器有通知权限时低余额发送 Notification
+- ⚙️ **面板设置**：点面板右上角齿轮即可改 `model` / 低余额阈值 / 今日预算，保存到本地 JSON，无需手改 YAML
 - 🧮 **会话用量**：读 `sessionProjections` 的 `tokenUsage` 投影，按官方价格折算花费（输入/缓存读/缓存写/输出分桶）；`model: auto` 时按会话实际请求头识别 flash/pro；已落盘消息按各自发生时的峰谷档与模型计价，进行中增量按当前档计价
 - 📊 **历史趋势（双 Tab 面板）**：「当前」Tab 看余额与实时花费；「历史」Tab 看近 7 天花费柱状图（有 `sessionPersistence` 时自动合并已保存会话）+ 本会话每条提问的花费明细（多步循环自动合并成一行，问题前 10 字 + Tokens + 花费）
 - ⚡ **峰谷定价**：北京 9:00-12:00 / 14:00-18:00 高峰价自动切换；面板显示当前档位与距下次切换倒计时；官方定价页每 6h 自动抓取；2026-08-17 前发生的消息按生效前标准价计入历史
@@ -67,7 +68,7 @@
 ```
 whale-purse/
 ├── lib/
-│   ├── index.js        # host 端：余额服务 + HTTP 路由（/api/whale-purse/balance、/api/whale-purse/balance/daily、/api/whale-purse/balance/messages）
+│   ├── index.js        # host 端：余额服务 + HTTP 路由（/api/whale-purse/balance、/api/whale-purse/balance/daily、/api/whale-purse/balance/messages、/api/whale-purse/settings）
 │   └── client.js       # 浏览器端：鲸鱼娘桌宠 + 双 Tab 面板（WebP 立绘 base64 内联）
 ├── assets/
 │   ├── whale-sprite.webp       # 内联立绘（280×373，透明，约 41KB）
