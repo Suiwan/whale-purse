@@ -24,6 +24,7 @@
     }
   },
   "scripts": {
+    "embed": "node scripts/embed-asset.mjs",
     "screenshot": "node scripts/screenshot.mjs"
   },
   "keywords": [

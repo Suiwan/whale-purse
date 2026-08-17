@@ -13,7 +13,7 @@ page.setDefaultTimeout(90_000)
 
 try {
   await page.goto('http://127.0.0.1:3080', { waitUntil: 'domcontentloaded' })
-  const ball = page.getByTestId('usage-meter-ball')
+  const ball = page.getByTestId('whale-purse-ball')
   await ball.waitFor({ state: 'visible', timeout: 60_000 })
   // 等余额加载出来
   await page.waitForTimeout(4000)
@@ -21,7 +21,7 @@ try {
 
   // 点开面板截图
   await ball.click()
-  const panel = page.getByTestId('usage-meter-panel')
+  const panel = page.getByTestId('whale-purse-panel')
   await panel.waitFor({ state: 'visible', timeout: 10_000 })
   await page.waitForTimeout(1500)
   await panel.screenshot({ path: './verify-out/panel-closeup.png' })

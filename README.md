@@ -60,14 +60,19 @@
 ```
 whale-purse/
 ├── lib/
-│   ├── index.js        # host 端：余额服务 + HTTP 路由（/api/balance、/api/balance/daily、/api/balance/messages）
-│   └── client.js       # 浏览器端：鲸鱼娘桌宠 + 双 Tab 面板（立绘 base64 内联）
+│   ├── index.js        # host 端：余额服务 + HTTP 路由（/api/whale-purse/balance、/api/whale-purse/balance/daily、/api/whale-purse/balance/messages）
+│   └── client.js       # 浏览器端：鲸鱼娘桌宠 + 双 Tab 面板（WebP 立绘 base64 内联）
 ├── assets/
-│   ├── whale-sprite.png        # 鲸鱼娘立绘（280×373，透明）
+│   ├── whale-sprite.webp       # 内联立绘（280×373，透明，约 41KB）
+│   ├── whale-sprite.png        # 鲸鱼娘立绘源 PNG（280×373，透明）
 │   ├── whale-front-source.png  # 立绘源图
 │   └── preview.png             # 预览图
-└── scripts/screenshot.mjs      # Playwright 截图脚本
+└── scripts/
+    ├── embed-asset.mjs         # 把 whale-sprite.webp/png 重新内联进 lib/client.js
+    └── screenshot.mjs          # Playwright 截图脚本
 ```
+
+`whale-sprite.webp` 由 PNG 源图生成：`cwebp -q 90 -alpha_q 100 -m 6 assets/whale-sprite.png -o assets/whale-sprite.webp`。改完素材后运行 `npm run embed` 重新内联。
 
 ## 素材来源与版权
 

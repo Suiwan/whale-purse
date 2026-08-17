@@ -20,6 +20,7 @@ ln -s "$(pwd)" ~/.dsh/profiles/web/node_modules/whale-purse
 
 ## 注意
 
-- 立绘 base64 内联在 `lib/client.js` 里（约 270KB），改动后刷新浏览器即可生效，无需构建。
+- 立绘 base64 内联在 `lib/client.js` 里（WebP，约 100KB），改动后刷新浏览器即可生效，无需构建。
+- 立绘素材以 `assets/whale-sprite.webp` 为准；改动素材后运行 `npm run embed`（或 `node scripts/embed-asset.mjs`）重新内联。
 - 服务端 `lib/index.js` 改动需重启 DSH 进程才完全生效（客户端有兜底）。
 - 截图脚本 `scripts/screenshot.mjs` 依赖本机 playwright-core 缓存路径，仅本地调试用。
