@@ -93,5 +93,53 @@ check('mixed session pricing.model other', mixed.pricing.model, 'other')
 const msgs = svc.messageCosts({ events: [headerEvent('deepseek-v4-flash'), assistantEvent(), headerEvent('gpt-4o'), assistantEvent()] })
 check('messageCosts keeps deepseek turn only', msgs.length, 1)
 
+// --- DSH branch session: seed history must not be billed again ---
+const headerEventWithSeq = (seq, model, provider) => ({ seq, type: 'request/header', data: { header: { config: { model, provider } } } })
+const assistantEventWithSeq = (seq, turn, tokens = {}) => ({
+  seq,
+  type: 'assistant/message',
+  time: 1700000000000,
+  data: { usage: { inputTokens: 100000, outputTokens: 50000, cacheReadTokens: 0, cacheWriteTokens: 0, ...tokens }, turn },
+})
+const registryOf = (tokenUsage) => ({ get: () => ({ snapshot: () => ({ values: { tokenUsage } }) }) })
+const makeBranchSvc = (ctx) => {
+  const s = Object.create(BalanceService.prototype)
+  s.model = 'auto'
+  s.pricingSnapshot = svc.pricingSnapshot
+  s.ctx = ctx
+  s.sessionUsageCache = new WeakMap()
+  return s
+}
+
+const branchPureSvc = makeBranchSvc(registryOf({ uncachedInputTokens: 100000, outputTokens: 50000, cacheReadTokens: 0, cacheWriteTokens: 0 }))
+const branchPure = {
+  header: { seedLength: 2 },
+  events: [
+    headerEventWithSeq(0, 'deepseek-v4-flash', 'deepseek-official'),
+    assistantEventWithSeq(1, 1),
+  ],
+}
+check('branch pure checkout ignores seed model', branchPureSvc.sessionModel(branchPure), 'flash')
+const branchPureCost = branchPureSvc.sessionCost(branchPure)
+check('branch pure checkout cost is 0', branchPureCost.cost, 0)
+check('branch pure checkout tokens are 0', branchPureCost.uncachedInputTokens + branchPureCost.outputTokens, 0)
+check('messageCosts branch pure ignores seed', branchPureSvc.messageCosts(branchPure).length, 0)
+
+const branchNewSvc = makeBranchSvc(registryOf({ uncachedInputTokens: 101000, outputTokens: 50500, cacheReadTokens: 0, cacheWriteTokens: 0 }))
+const branchNew = {
+  header: { seedLength: 2 },
+  events: [
+    headerEventWithSeq(0, 'deepseek-v4-flash', 'deepseek-official'),
+    assistantEventWithSeq(1, 1),
+    headerEventWithSeq(3, 'deepseek-v4-flash', 'deepseek-official'),
+    assistantEventWithSeq(4, 2, { inputTokens: 1000, outputTokens: 500 }),
+  ],
+}
+const branchNewCost = branchNewSvc.sessionCost(branchNew)
+check('branch new messages cost > 0', branchNewCost.cost > 0, true)
+check('branch new messages only counts post-seed input', branchNewCost.uncachedInputTokens, 1000)
+check('branch new messages only counts post-seed output', branchNewCost.outputTokens, 500)
+
+
 console.log(failures === 0 ? '\nALL PASS' : `\n${failures} FAILURES`)
 process.exit(failures === 0 ? 0 : 1)
