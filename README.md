@@ -15,7 +15,7 @@
 - 💰 **余额监视**：DeepSeek 官方 `Get User Balance` 接口，30s 轮询 + 并发去重；请求失败保留上次快照并提示过期
 - ⚠️ **低余额/预算提醒**：余额低于阈值或今日花费超过预算时，面板警告 + 鲸鱼娘红点；浏览器有通知权限时低余额发送 Notification
 - ⚙️ **面板设置**：点面板右上角齿轮即可改 `model` / 低余额阈值 / 今日预算，保存到本地 JSON，无需手改 YAML
-- 🧮 **会话用量**：读 `sessionProjections` 的 `tokenUsage` 投影，按官方价格折算花费（输入/缓存读/缓存写/输出分桶）；`model: auto` 时按会话实际请求头识别 flash/pro；已落盘消息按各自发生时的峰谷档与模型计价，进行中增量按当前档计价
+- 🧮 **会话用量**：读 `sessionProjections` 的 `tokenUsage` 投影，按官方价格折算花费（输入未命中 / 缓存命中 / 输出三桶，分桶条形图按金额占比绘制、每桶标注 token 数、金额与金额占比，避免缓存命中 token 占大头却几乎不花钱的误导；DeepSeek 官方没有「缓存写入」计费类别，故不展示该桶）；`model: auto` 时按会话实际请求头识别 flash/pro，识别为非 DeepSeek 模型（如 GPT / Claude）的会话不估算花费；已落盘消息按各自发生时的峰谷档与模型计价，进行中增量按当前档计价；DSH「在新会话中新建分支」checkout 出的历史 seed 不会重复计费，只统计新建分支后的新增用量
 - 📊 **历史趋势（双 Tab 面板）**：「当前」Tab 看余额与实时花费；「历史」Tab 看近 7 天花费柱状图（有 `sessionPersistence` 时自动合并已保存会话）+ 本会话每条提问的花费明细（多步循环自动合并成一行，问题前 10 字 + Tokens + 花费）
 - ⚡ **峰谷定价**：北京 9:00-12:00 / 14:00-18:00 高峰价自动切换；面板显示当前档位与距下次切换倒计时；官方定价页每 6h 自动抓取；2026-08-17 前发生的消息按生效前标准价计入历史
 - 🌗 **主题适配**：面板颜色与柱状图深浅随 DSH 浅色/深色主题切换（`--dsw-alias-*` token）
@@ -54,7 +54,7 @@
 
 | 字段 | 默认 | 说明 |
 | --- | --- | --- |
-| `model` | `auto` | 计价模型：`auto`（按会话实际请求头识别）/ `pro` / `flash` |
+| `model` | `auto` | 计价模型：`auto`（按会话实际请求头识别；非 DeepSeek 模型不估算花费）/ `pro` / `flash` |
 | `refreshIntervalSeconds` | `30` | 余额轮询间隔（秒） |
 | `apiKeyEnv` | `DEEPSEEK_API_KEY` | API key 的环境变量名 |
 | `baseUrl` | `https://api.deepseek.com` | 余额接口 base URL |
@@ -77,7 +77,8 @@ whale-purse/
 │   └── preview.png             # 预览图
 └── scripts/
     ├── embed-asset.mjs         # 把 whale-sprite.webp/png 重新内联进 lib/client.js
-    └── screenshot.mjs          # Playwright 截图脚本
+    ├── screenshot.mjs          # Playwright 截图脚本
+    └── smoke-test.mjs          # 模型识别/计价逻辑冒烟测试（node scripts/smoke-test.mjs）
 ```
 
 `whale-sprite.webp` 由 PNG 源图生成：`cwebp -q 90 -alpha_q 100 -m 6 assets/whale-sprite.png -o assets/whale-sprite.webp`。改完素材后运行 `npm run embed` 重新内联。
