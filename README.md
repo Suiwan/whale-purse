@@ -6,6 +6,11 @@
 
 ![preview](assets/preview.png)
 
+## About
+
+A cute whale desktop pet for DeepSeek Harness that keeps an eye on your DeepSeek balance and session usage/cost. Drag her anywhere, click to open a live panel with real-time spend, peak/off-peak pricing, budget alerts, and history trends.
+
+
 ## 特性
 
 - 🐋 **鲸鱼娘桌宠**：透明立绘悬浮在页面上，随波轻微摇摆，脚底带投影
