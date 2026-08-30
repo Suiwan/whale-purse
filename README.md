@@ -83,6 +83,16 @@ whale-purse/
 
 `whale-sprite.webp` 由 PNG 源图生成：`cwebp -q 90 -alpha_q 100 -m 6 assets/whale-sprite.png -o assets/whale-sprite.webp`。改完素材后运行 `npm run embed` 重新内联。
 
+## 更新日志
+
+### 2026-08-28
+
+- 修复：DSH「在新会话中新建分支」后，新会话不再重复计算 checkout（seed）之前的花费，只统计分支后的新增用量
+- 修复：非 DeepSeek 模型（GPT / Qwen / Claude 等）不再被误按 DeepSeek flash/pro 计费，auto 模式下显示「未估算花费」
+- 优化：分桶条形图改为按金额占比绘制，并显示每桶金额占比；移除 DeepSeek 不存在的「缓存写入」展示桶
+- 测试：新增 `scripts/smoke-test.mjs` 冒烟测试，覆盖模型识别、分支 seed 跳过与混合模型计价
+
+
 ## 素材来源与版权
 
 - 鲸鱼娘立绘来自 [dafeiyu-pet](https://github.com/1190fasheqi/dafeiyu-pet)（MIT License），是 DeepSeek 鲸鱼形象的二创桌宠。
