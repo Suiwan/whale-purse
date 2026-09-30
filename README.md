@@ -90,6 +90,10 @@ whale-purse/
 
 ## 更新日志
 
+### 2026-09-30
+
+- 修复：DSH 0.2+（含桌面版）上桌宠静默消失——新宿主要求插槽先由父条目的 `children` 表声明，原先在声明就绪前直接 `slots.register('shell.overlay', …)` 会抛 `slot "shell.overlay" is not declared (a parent entry's children table must declare it)`，而该错误被宿主吞掉（不落控制台），表现为余额接口正常、浏览器半边也加载了，但桌宠不渲染；现改为 `slots.inject('shell.overlay', …)` 等待式注册（宿主没有该 API 时回退为直接注册，0.1.x 行为不变）
+
 ### 2026-08-28
 
 - 修复：DSH「在新会话中新建分支」后，新会话不再重复计算 checkout（seed）之前的花费，只统计分支后的新增用量
